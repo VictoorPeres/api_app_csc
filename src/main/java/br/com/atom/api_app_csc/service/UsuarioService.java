@@ -25,7 +25,7 @@ public class UsuarioService {
         if (usuario == null) {
             return "Campos não preenchidos.";
         } else if (usuario.getCpf() == null || usuario.getEmail() == null || usuario.getNome() == null ||
-                usuario.getUsername() == null || usuario.getSenha() == null || usuario.getConfirmaSenha() == null) {
+                usuario.getUsername() == null || usuario.getPlayerId() == null || usuario.getSenha() == null || usuario.getConfirmaSenha() == null) {
             return "Campos não preenchidos.";
         }else if (!usuario.getSenha().equals(usuario.getConfirmaSenha())) {
             return "As senhas não coincidem";

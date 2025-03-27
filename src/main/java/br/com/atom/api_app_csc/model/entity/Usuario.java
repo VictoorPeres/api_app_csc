@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Set;
 
 @Data
 @Entity
@@ -22,6 +23,9 @@ public class Usuario implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario")
     private Long id;
+
+    @Column(name = "player_id")
+    private String playerId;
 
     @Column(name = "cd_cpf")
     private String cpf;
@@ -41,6 +45,9 @@ public class Usuario implements Serializable {
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "id_status_usuario")
     private StatusUsuario statusUsuario;
+
+    @ManyToMany(mappedBy = "players")
+    private Set<Team> teams;
 
     @Transient
     private String senha;

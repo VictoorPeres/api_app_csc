@@ -55,7 +55,7 @@ public class UsuarioController {
             }
 
             String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());
-            usuario.setStatusUsuario(StatusUsuario.INATIVO);
+            usuario.setStatusUsuario(StatusUsuario.ATIVO);
             usuario.setPassword(senhaCriptografada);
             usuarioService.salvar(usuario);
 
@@ -77,6 +77,7 @@ public class UsuarioController {
             );
             Usuario usuario = usuarioService.findByUsername(usuarioDTO.getUsername());
             String token = usuarioService.criarTokenAcessoApp(usuario);
+
             return ResponseEntity.ok(new ResponseMessage(token));
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ResponseMessage("Credenciais inválidas"));
