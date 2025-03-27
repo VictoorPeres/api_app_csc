@@ -1,7 +1,0 @@
-br\com\atom\api_app_csc\ApiAppCscApplication.class
-br\com\atom\api_app_csc\controller\UsuarioController.class
-br\com\atom\api_app_csc\service\UsuarioService.class
-br\com\atom\api_app_csc\ServletInitializer.class
-br\com\atom\api_app_csc\model\Usuario.class
-br\com\atom\api_app_csc\repository\UsuarioRepository.class
-br\com\atom\api_app_csc\config\SecurityConfig.class
