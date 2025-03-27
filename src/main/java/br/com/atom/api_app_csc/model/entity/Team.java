@@ -24,7 +24,7 @@ public class Team implements Serializable {
     private String teamId;
 
     @Column(name = "nickname")
-    private String nicknameTeam;
+    private String nickNameTeam;
 
     @Column(name = "nm_team")
     private String nameTeam;

@@ -65,7 +65,7 @@ public class UsuarioController {
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ResponseMessage("Erro ao salvar usuário: " + e.getMessage()));
+                    .body(new ResponseMessage("Erro ao cadastrado usuário: " + e.getMessage()));
         }
     }
 

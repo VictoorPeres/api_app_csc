@@ -25,9 +25,6 @@ public class TokenAcessoApp {
     @Column(name = "cd_token", length = 200)
     private String token;
 
-    @Column(name = "cd_token_processador", length = 200)
-    private String tokenProcessador;
-
     @Column(name = "dt_criacao")
     private Date dataCriacao;
 
