@@ -44,6 +44,10 @@ public class UsuarioService {
         return usuarioRepository.findByUsername(username);
     }
 
+    public Usuario findByPlayerId(String playerId) {
+        return usuarioRepository.findByPLayerId(playerId);
+    }
+
     public String criarTokenAcessoApp(Usuario usuario){
 
         String codigoTokenRetorno = "";

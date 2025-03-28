@@ -29,9 +29,6 @@ public class Team implements Serializable {
     @Column(name = "nm_team")
     private String nameTeam;
 
-    @Column(name = "avatar")
-    private String avatarTeam;
-
     @ManyToMany
     @JoinTable(
             name = "team_players",

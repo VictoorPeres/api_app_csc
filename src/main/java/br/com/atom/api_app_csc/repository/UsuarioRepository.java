@@ -41,4 +41,16 @@ public class UsuarioRepository {
         query.setParameter("username", username);
         return (Usuario) query.getSingleResult();
     }
+
+    @Transactional
+    public Usuario findByPLayerId(String playerId){
+        String jpql = "SELECT u FROM Usuario u WHERE u.playerId = :playerId";
+        Query query = entityManager.createQuery(jpql);
+        query.setParameter("playerId", playerId);
+
+        if(!query.getResultList().isEmpty()){
+            return (Usuario) query.getSingleResult();
+        }
+        return null;
+    }
 }

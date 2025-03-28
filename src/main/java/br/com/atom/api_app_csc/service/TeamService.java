@@ -22,21 +22,12 @@ public class TeamService {
     @Autowired
     TokenAcessoAppService tokenAcessoAppService;
 
-    public String validarTeam(String authHeader, Team team) {
-        String token = authHeader.replace("Bearer ", "");
+    public String validarTeam(Team team) {
 
-        if (team == null || token == null) {
+        if (team == null) {
             return "Campos não preenchidos.";
         } else if (team.getTeamId() == null || team.getNameTeam() == null || team.getNickNameTeam() == null) {
             return "Campos não preenchidos.";
-        }else{
-            TokenAcessoApp tokenAcessoApp = tokenAcessoAppService.findByCodigo(token);
-
-            if(tokenAcessoApp == null){
-                return "Token não localizado.";
-            } else if (tokenAcessoApp.getStatus().ordinal() == StatusTokenAcessoApp.INATIVO.ordinal()) {
-                return "Token expirado.";
-            }
         }
         return null;  // Caso esteja tudo ok
     }

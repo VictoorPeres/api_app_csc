@@ -1,9 +1,14 @@
 package br.com.atom.api_app_csc.controller;
 
+import br.com.atom.api_app_csc.model.entity.PlayerDTO;
+import br.com.atom.api_app_csc.model.entity.TokenAcessoApp;
 import br.com.atom.api_app_csc.model.entity.Usuario;
 import br.com.atom.api_app_csc.model.entity.UsuarioDTO;
+import br.com.atom.api_app_csc.model.enums.StatusTokenAcessoApp;
 import br.com.atom.api_app_csc.model.enums.StatusUsuario;
 import br.com.atom.api_app_csc.repository.UsuarioRepository;
+import br.com.atom.api_app_csc.service.ApiService;
+import br.com.atom.api_app_csc.service.TokenAcessoAppService;
 import br.com.atom.api_app_csc.service.UsuarioService;
 import br.com.atom.api_app_csc.util.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +20,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(
@@ -32,9 +34,15 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @Autowired
+    TokenAcessoAppService tokenAcessoAppService;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     private final AuthenticationManager authenticationManager;
+
+    @Autowired
+    private ApiService apiService;
 
     public UsuarioController(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
@@ -52,6 +60,13 @@ public class UsuarioController {
             if (usuarioService.findByEmail(usuario.getEmail())) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(new ResponseMessage("E-mail já cadastrado."));
+            }
+
+            Usuario usuarioBanco = usuarioService.findByPlayerId(usuario.getPlayerId());
+
+            if(usuarioBanco != null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(new ResponseMessage("PlayerId já cadastrado."));
             }
 
             String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());
@@ -84,6 +99,21 @@ public class UsuarioController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ResponseMessage("Erro ao autenticar: " + e.getMessage()));
+        }
+    }
+
+    @GetMapping(value = "/consulta/{playerId}")
+    public ResponseEntity<?> consulta(@RequestHeader("Authorization") String authHeader, @PathVariable String playerId) {
+        String token = authHeader.replace("Bearer ", "");
+        TokenAcessoApp tokenAcessoApp = tokenAcessoAppService.findByCodigo(token);
+
+        if(tokenAcessoApp == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("Token não localizado."));
+        } else if (tokenAcessoApp.getStatus().ordinal() == StatusTokenAcessoApp.INATIVO.ordinal()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("Token expirado."));
+        }else{
+            PlayerDTO playerDTO =  apiService.getPLayerPorId(playerId);
+            return ResponseEntity.status(HttpStatus.OK).body(playerDTO);
         }
     }
 }
