@@ -1,9 +1,7 @@
 package br.com.atom.api_app_csc.service;
 
-import br.com.atom.api_app_csc.model.entity.PlayerDTO;
-import br.com.atom.api_app_csc.model.entity.TeamDTO;
-import br.com.atom.api_app_csc.model.entity.Usuario;
-import org.json.JSONArray;
+import br.com.atom.api_app_csc.model.dto.PlayerDTO;
+import br.com.atom.api_app_csc.model.dto.TeamDTO;
 import org.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;

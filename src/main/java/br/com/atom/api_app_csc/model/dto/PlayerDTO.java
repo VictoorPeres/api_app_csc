@@ -1,8 +1,6 @@
-package br.com.atom.api_app_csc.model.entity;
+package br.com.atom.api_app_csc.model.dto;
 
 import lombok.Data;
-
-import java.util.Date;
 
 @Data
 public class PlayerDTO {

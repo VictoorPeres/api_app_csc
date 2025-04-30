@@ -1,8 +1,7 @@
 package br.com.atom.api_app_csc.controller;
 
-import br.com.atom.api_app_csc.model.entity.PlayerDTO;
 import br.com.atom.api_app_csc.model.entity.Team;
-import br.com.atom.api_app_csc.model.entity.TeamDTO;
+import br.com.atom.api_app_csc.model.dto.TeamDTO;
 import br.com.atom.api_app_csc.model.entity.TokenAcessoApp;
 import br.com.atom.api_app_csc.model.enums.StatusTokenAcessoApp;
 import br.com.atom.api_app_csc.service.ApiService;

@@ -46,9 +46,6 @@ public class Usuario implements Serializable {
     @Column(name = "id_status_usuario")
     private StatusUsuario statusUsuario;
 
-    @ManyToMany(mappedBy = "players")
-    private Set<Team> teams;
-
     @Transient
     private String senha;
 

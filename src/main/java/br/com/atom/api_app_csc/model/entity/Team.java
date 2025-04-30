@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -29,13 +30,8 @@ public class Team implements Serializable {
     @Column(name = "nm_team")
     private String nameTeam;
 
-    @ManyToMany
-    @JoinTable(
-            name = "team_players",
-            joinColumns = @JoinColumn(name = "team_id"),
-            inverseJoinColumns = @JoinColumn(name = "player_id")
-    )
-    private Set<Usuario> players;
+    @OneToMany(mappedBy = "team", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TeamPlayer> teamPlayerList;
 
 }
 

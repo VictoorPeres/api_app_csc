@@ -1,12 +1,12 @@
 package br.com.atom.api_app_csc.controller;
 
-import br.com.atom.api_app_csc.model.entity.PlayerDTO;
+import br.com.atom.api_app_csc.model.dto.PlayerDTO;
+import br.com.atom.api_app_csc.model.dto.UsuarioDTO;
 import br.com.atom.api_app_csc.model.entity.TokenAcessoApp;
 import br.com.atom.api_app_csc.model.entity.Usuario;
-import br.com.atom.api_app_csc.model.entity.UsuarioDTO;
+import br.com.atom.api_app_csc.model.dto.LoginDTO;
 import br.com.atom.api_app_csc.model.enums.StatusTokenAcessoApp;
 import br.com.atom.api_app_csc.model.enums.StatusUsuario;
-import br.com.atom.api_app_csc.repository.UsuarioRepository;
 import br.com.atom.api_app_csc.service.ApiService;
 import br.com.atom.api_app_csc.service.TokenAcessoAppService;
 import br.com.atom.api_app_csc.service.UsuarioService;
@@ -51,6 +51,7 @@ public class UsuarioController {
     @PostMapping(value = "/cadastro")
     public ResponseEntity<?> salvar(@RequestBody Usuario usuario) {
         try {
+            UsuarioDTO usuarioDTO = new UsuarioDTO();
             String msg = usuarioService.validarUsuario(usuario);
             if (msg != null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -74,9 +75,18 @@ public class UsuarioController {
             usuario.setPassword(senhaCriptografada);
             usuarioService.salvar(usuario);
 
+            usuario = usuarioService.findByPlayerId(usuario.getPlayerId());
+
+            usuarioDTO.setId(usuario.getId());
+            usuarioDTO.setPlayerId(usuario.getPlayerId());
+            usuarioDTO.setCpf(usuario.getCpf());
+            usuarioDTO.setEmail(usuario.getEmail());
+            usuarioDTO.setNome(usuario.getNome());
+            usuarioDTO.setUsername(usuario.getUsername());
+
 
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new ResponseMessage("Usuário cadastrado."));
+                    .body(usuarioDTO);
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -85,12 +95,12 @@ public class UsuarioController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<?> login(@RequestBody UsuarioDTO usuarioDTO) {
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(usuarioDTO.getUsername(), usuarioDTO.getPassword())
+                    new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword())
             );
-            Usuario usuario = usuarioService.findByUsername(usuarioDTO.getUsername());
+            Usuario usuario = usuarioService.findByUsername(loginDTO.getUsername());
             String token = usuarioService.criarTokenAcessoApp(usuario);
 
             return ResponseEntity.ok(new ResponseMessage(token));
